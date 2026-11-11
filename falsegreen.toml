@@ -46,6 +46,32 @@ required = false
   timeout_seconds = 120
   allowed_exit_codes = [0]
 
+# ── the measured quantity ───────────────────────────────────────────────
+# The third verb: the client's OWN harness (src/bin/ledger-bench.rs)
+# MEASURED on the append path — 200k records, canonicalize → SHA-256 →
+# link check over the shipped chain.rs code. Run 3× in the job container;
+# the report records min/median/max with the machine conditions. The
+# frozen bar (assert min, 25% band around the measured baseline) decides
+# a demonstrated regression — no bar would make it recorded evidence only.
+[[benchmark]]
+name = "append_throughput"
+argv = ["cargo", "run", "--release", "--bin", "ledger-bench"]
+cwd = "."
+timeout_seconds = 300
+
+[[benchmark.measure]]
+metric = "append_events_per_sec"
+json = "events_per_sec"
+unit = "events/s"
+baseline = 120000.0
+tolerance_pct = 25.0
+assert = "min"
+
+[[benchmark.measure]]
+metric = "append_events_per_sec_human"
+regex = "append_events_per_sec ([0-9]+)"
+unit = "events/s"
+
 # ── the claim, with its two formal encodings ─────────────────────────────
 # One sentence, two encodings the machines discharge:
 # * Kani: a bounded model check over the SHIPPED arithmetic in
