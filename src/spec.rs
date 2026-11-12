@@ -20,5 +20,10 @@ use creusot_std::prelude::*;
 #[requires(prev < 18446744073709551615u64)]
 #[ensures(result == (seq == prev + 1u64))]
 pub fn links(seq: u64, prev: u64) -> bool {
-    seq == prev + 1
+    // The same sentence with no ceiling hazard: for u64, `seq - prev == 1`
+    // holds exactly where `seq == prev + 1` does, so the `ensures` above is
+    // unchanged — while the compiled body is TOTAL: an out-of-domain caller
+    // gets `false`, never an overflow panic. The scaffold's unguarded Kani
+    // harness on the old body reached the ceiling and disproved it.
+    matches!(seq.checked_sub(prev), Some(1))
 }
