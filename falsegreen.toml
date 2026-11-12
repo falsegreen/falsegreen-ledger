@@ -9,6 +9,15 @@ schema = 1
 language = "rust"
 wall_seconds = 2700
 
+# The frozen scan posture (0.22.0). Declared EXPLICITLY because a missing
+# [scan] table currently yields a zero budget (R-Scan0: derived Default in
+# the verifier) — the deterministic layers (S1 scaffolded harnesses, S2
+# whole-crate Creusot, S5 census) plus the declared-model taint layer (S4)
+# get 40 minutes here; no taint model is declared, so S4 reports NOT
+# ASSESSED honestly; every other budget rides the frozen defaults.
+[scan]
+scan_budget_minutes = 40
+
 # ── the mechanical floor ──────────────────────────────────────────────────
 [[criterion]]
 id = "build"
