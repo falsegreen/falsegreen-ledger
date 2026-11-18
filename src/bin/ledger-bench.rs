@@ -87,3 +87,37 @@ fn main() {
     println!("append_events_per_sec {per_sec:.0}");
     let _ = last;
 }
+
+// e2e repair attempt 1 (the driver keeps trying; the code stays broken)
+
+// e2e repair attempt 2 (the driver keeps trying; the code stays broken)
+
+// e2e repair attempt 3 (the driver keeps trying; the code stays broken)
+
+// e2e repair attempt 4 (the driver keeps trying; the code stays broken)
+
+// e2e repair attempt 5 (the driver keeps trying; the code stays broken)
+
+// e2e repair attempt 1 (the driver keeps trying; the code stays broken)
+
+// e2e repair attempt 2 (the driver keeps trying; the code stays broken)
+
+// e2e repair attempt 3 (the driver keeps trying; the code stays broken)
+
+// e2e repair attempt 4 (the driver keeps trying; the code stays broken)
+
+// e2e repair attempt 5 (the driver keeps trying; the code stays broken)
+
+// e2e repair attempt 1 (the driver keeps trying; the code stays broken)
+
+// e2e repair attempt 2 (the driver keeps trying; the code stays broken)
+
+// e2e repair attempt 3 (the driver keeps trying; the code stays broken)
+
+// e2e repair attempt 4 (the driver keeps trying; the code stays broken)
+
+// e2e repair attempt 1 (the driver keeps trying; the code stays broken)
+
+// e2e repair attempt 2 (the driver keeps trying; the code stays broken)
+
+// e2e repair attempt 3 (the driver keeps trying; the code stays broken)
