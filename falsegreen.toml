@@ -7,7 +7,7 @@
 # records the proposition it actually decided, verbatim.
 schema = 1
 language = "rust"
-wall_seconds = 2700
+wall_seconds = 3600
 
 # The frozen scan posture (0.22.0). Declared EXPLICITLY because a missing
 # [scan] table currently yields a zero budget (R-Scan0: derived Default in
@@ -17,6 +17,12 @@ wall_seconds = 2700
 # every other budget rides the frozen defaults.
 [scan]
 scan_budget_minutes = 40
+# 0.2.0: the workspace gained the web front end; the scan scope is a
+# FROZEN choice, not a guess — the proven core crate is what the scan
+# covers (S1/S2/S4/S5 rows over `falsegreen-ledger`). The web layer is
+# covered by the criteria (build/tests/clippy over the whole workspace),
+# its own benchmark, and the [ui] evidence obligation below.
+target = ["falsegreen-ledger"]
 # The declared model (S4): untrusted content enters through shard-file reads
 # and CLI event JSON; the signing oracle and the hashing routine must never
 # receive it unvalidated; the chain-verification functions are the
@@ -32,7 +38,7 @@ title = "the program compiles (release)"
 required = true
   [[criterion.command]]
   argv = ["cargo", "build", "--release"]
-  timeout_seconds = 600
+  timeout_seconds = 1200
   allowed_exit_codes = [0]
 
 [[criterion]]
@@ -87,6 +93,39 @@ assert = "min"
 metric = "append_events_per_sec_human"
 regex = "append_events_per_sec ([0-9]+)"
 unit = "events/s"
+
+# 0.2.0: the WEB layer's own measured quantity — the shipped SSR render
+# path (VirtualDom seam, headless) and the board snapshot path (verify the
+# whole chain + read shards + assemble props), over a 203-record trail.
+# Baselines MEASURED on the dev box 2026-11-18 (renders_per_sec 2310,
+# board_snapshots_per_sec 500); the bars assert the MIN with the 25% band.
+[[benchmark]]
+name = "web_ssr_pipeline"
+argv = ["cargo", "run", "--release", "--bin", "web-bench"]
+cwd = "."
+timeout_seconds = 300
+
+[[benchmark.measure]]
+metric = "ssr_renders_per_sec"
+json = "renders_per_sec"
+unit = "renders/s"
+baseline = 2310.0
+tolerance_pct = 25.0
+assert = "min"
+
+[[benchmark.measure]]
+metric = "board_snapshots_per_sec"
+json = "board_snapshots_per_sec"
+unit = "snapshots/s"
+baseline = 500.0
+tolerance_pct = 25.0
+assert = "min"
+
+# 0.28.0 UI evidence obligation: the frozen runtime UI contract the Job
+# must evidence (the witness leg observes the frozen reference flow bound
+# to THIS source; the report names the fixture identity honestly).
+[ui]
+contract_id = "transfer-confirmation-v1"
 
 # ── the claim, with its two formal encodings ─────────────────────────────
 # One sentence, two encodings the machines discharge:

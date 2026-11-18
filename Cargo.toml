@@ -1,12 +1,15 @@
+[workspace]
+resolver = "2"
+members = [".", "web"]
+
 [package]
 name = "falsegreen-ledger"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 rust-version = "1.85"
 license = "MIT"
 description = "A tamper-evident, hash-chained audit ledger for AI-agent actions"
 repository = "https://github.com/truemagic-coder/falsegreen-ledger"
-homepage = "https://github.com/truemagic-coder/falsegreen-ledger"
 readme = "README.md"
 keywords = ["audit", "ledger", "tamper-evident", "hash-chain", "merkle"]
 categories = ["cryptography", "data-structures"]
