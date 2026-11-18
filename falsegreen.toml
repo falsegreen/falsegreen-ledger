@@ -101,7 +101,7 @@ unit = "events/s"
 # board_snapshots_per_sec 500); the bars assert the MIN with the 25% band.
 [[benchmark]]
 name = "web_ssr_pipeline"
-argv = ["cargo", "run", "--release", "--bin", "web-bench"]
+argv = ["cargo", "run", "-p", "falsegreen-ledger-web", "--release", "--bin", "web-bench"]
 cwd = "."
 timeout_seconds = 300
 
@@ -152,6 +152,11 @@ kani = "proofs/links_kani.rs"
 # u64-addition safety obligation closes on the guard in the code) and the
 # guarded specification in src/spec.rs: four obligations, all closed.
 targets = ["links"]
+# 0.2.0: the workspace gained the `web` member — it cannot compile under
+# `--cfg creusot` (it imports the core's cfg-gated re-exports), so the proof
+# build is PINNED to the proven package. Without this the whole-workspace
+# build fails on web and the rung honestly reports `unavailable`.
+package = "falsegreen-ledger"
 mode = "prove"
 provers = ["alt-ergo", "z3"]
 timeout_ms = 30000
